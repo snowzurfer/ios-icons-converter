@@ -13,9 +13,9 @@ import subprocess
 def convert_single(svg, output_name, output_dir, base_size,
                    convert_only_1x=False):
     sizes = [
-        base_size,
-        base_size * 2,
-        base_size * 3
+        int(base_size),
+        int(base_size * 2),
+        int(base_size * 3)
             ]
 
     if convert_only_1x:
@@ -45,12 +45,12 @@ def convert(svg, output_name, output_dir):
     print('\nConverting...')
 
     conversion_targets = [
-        20,
-        29,
-        40,
-        60,
-        76,
-        83
+        20.0,
+        29.0,
+        40.0,
+        60.0,
+        76.0,
+        83.5
     ]
 
     for target in conversion_targets:
