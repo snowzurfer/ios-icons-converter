@@ -5,7 +5,7 @@ Convert SVGs to PNGs of all the sizes required by the appstore.
 ## Prerequisites
 
 * python >= 3
-* imagemagik
+* imagemagick
 
 ### Installing
 
@@ -13,7 +13,7 @@ On MacOS:
 
 ```sh
 brew install python3
-brew install imagemagik --with-librsvg
+brew install imagemagick --with-librsvg
 ```
 
 ## Example usage
