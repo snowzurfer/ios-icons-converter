@@ -10,7 +10,7 @@ import os
 import subprocess
 
 
-def convert_single(svg, output_name, output_dir, base_size,
+def convert_single(input_img, output_name, output_dir, base_size,
                    convert_only_1x=False):
     sizes = [
         int(base_size),
@@ -30,18 +30,34 @@ def convert_single(svg, output_name, output_dir, base_size,
         png_name = output_name + postfixes[i] + '.png'
         final_name = os.path.join(output_dir, png_name)
 
-        pRecons = subprocess.Popen([
-            'convert', '-background', 'none',
-            '-density', '1000',
-            '-size', sizes_strings[i],
-            svg,
-            final_name
-        ])
-        pRecons.wait()
-        print('Converted: {}'.format(png_name))
+        if input_img.lower().endswith('.svg'):
+            pRecons = subprocess.Popen([
+                'convert',
+                '-background', 'none',
+                '-density', '512',
+                '-gravity', 'center',
+                '-scale', '80%',
+                '-resize', sizes_strings[i],
+                '-extent', sizes_strings[i],
+                input_img,
+                final_name
+            ])
+            pRecons.wait()
+            print('Converted: {}'.format(png_name))
+
+        elif input_img.lower().endswith(('.png', '.jpg', '.jpeg')):
+            pRecons = subprocess.Popen([
+                'convert',
+                '-resize', sizes_strings[i],
+                input_img,
+                final_name
+            ])
+            pRecons.wait()
+
+            print('Resized: {}'.format(png_name))
 
 
-def convert(svg, output_name, output_dir):
+def convert(input_img, output_name, output_dir):
     print('\nConverting...')
 
     conversion_targets = [
@@ -54,23 +70,23 @@ def convert(svg, output_name, output_dir):
     ]
 
     for target in conversion_targets:
-        convert_single(svg, output_name, output_dir, target)
+        convert_single(input_img, output_name, output_dir, target)
 
-    convert_single(svg, output_name, output_dir, 1024, True)
+    convert_single(input_img, output_name, output_dir, 1024, True)
 
     print('\nFinished conversion!')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-            description='Convert from SVG to PNGs for all the sizes required by the appstore')
-    parser.add_argument('svg', help='The SVG to user for the conversion')
+            description='Convert from SVG or PNGs to PNGs for all the sizes required by the appstore')
+    parser.add_argument('input', help='The input image to use for the conversion')
     parser.add_argument('output_dir', help='The directory to use to use for the outputs')
     parser.add_argument('--output_name', help='The name to use for the outputs\' prefix')
 
     args = parser.parse_args()
 
-    output_name = args.svg.split('/')[-1]
+    output_name = args.input.split('/')[-1]
     output_name = output_name.split('.')[0]
 
     if args.output_name is not None:
@@ -79,4 +95,4 @@ if __name__ == '__main__':
 
     os.makedirs(args.output_dir, exist_ok=True)
 
-    convert(args.svg, output_name, args.output_dir)
+    convert(args.input, output_name, args.output_dir)
