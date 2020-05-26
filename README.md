@@ -13,8 +13,16 @@ On MacOS:
 
 ```sh
 brew install python3
-brew install imagemagick --with-librsvg
+brew install https://github.com/Homebrew/homebrew-core/raw/46a2ef7c9f0380b8e19f8dfe37270caa27581353/Formula/imagemagick.rb --with-librsvg
 ```
+
+The latter seems to be [the simplest](https://stackoverflow.com/a/55637475/495611) way to install `imagemagick` with `librsvg` as of May 2020. If you get an error about `libldtl` when installing, try reinstalling `libtool` as suggested [here](https://github.com/Homebrew/legacy-homebrew/issues/27226):
+
+```sh
+brew remove libtool && brew install libtool
+```
+
+Then try installing `imagemagick` again.
 
 ## Example usage
 
