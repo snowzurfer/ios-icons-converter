@@ -33,7 +33,6 @@ def convert_single(input_img, output_name, output_dir, base_size,
         if input_img.lower().endswith('.svg'):
             pRecons = subprocess.Popen([
                 'convert',
-                '-background', 'none',
                 '-density', '512',
                 '-gravity', 'center',
                 '-scale', '80%',
